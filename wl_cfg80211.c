@@ -12463,11 +12463,17 @@ wl_cfg80211_set_country_code(struct net_device *net, char *country_code,
 	}
 #endif /* WL_AUTO_COUNTRY */
 
+#if 0
+	/*
+	 * A revinfo of -1 is still valid as it was in previous driver
+	 * versions, so not sure why the check was added here.
+	 */
 	if (revinfo < 0) {
 		WL_ERR(("country revinfo wrong : %d\n", revinfo));
 		ret = BCME_BADARG;
 		goto exit;
 	}
+#endif
 
 	if (dhd_conf_same_country(dhd, country_code)) {
 		goto exit;
