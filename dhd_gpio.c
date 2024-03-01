@@ -31,6 +31,8 @@ bcmdhd_wlan {
 #define GPIO_WL_HOST_WAKE_PROPNAME	"gpio_wl_host_wake"
 #endif
 
+extern int imx_wlan_reg_on_set(int gpio_num, int on);
+
 static int
 dhd_wlan_set_power(int on, wifi_adapter_info_t *adapter)
 {
@@ -40,7 +42,7 @@ dhd_wlan_set_power(int on, wifi_adapter_info_t *adapter)
 	if (on) {
 		printf("======== PULL WL_REG_ON(%d) HIGH! ========\n", gpio_wl_reg_on);
 		if (gpio_wl_reg_on >= 0) {
-			err = gpio_direction_output(gpio_wl_reg_on, 1);
+			err = imx_wlan_reg_on_set(gpio_wl_reg_on, 1);
 			if (err) {
 				printf("%s: WL_REG_ON didn't output high\n", __FUNCTION__);
 				return -EIO;
@@ -78,7 +80,7 @@ dhd_wlan_set_power(int on, wifi_adapter_info_t *adapter)
 #endif /* BUS_POWER_RESTORE */
 		printf("======== PULL WL_REG_ON(%d) LOW! ========\n", gpio_wl_reg_on);
 		if (gpio_wl_reg_on >= 0) {
-			err = gpio_direction_output(gpio_wl_reg_on, 0);
+			err = imx_wlan_reg_on_set(gpio_wl_reg_on, 0);
 			if (err) {
 				printf("%s: WL_REG_ON didn't output low\n", __FUNCTION__);
 				return -EIO;
@@ -265,14 +267,8 @@ dhd_wlan_init_gpio(wifi_adapter_info_t *adapter)
 #endif
 	}
 
-	if (gpio_wl_reg_on >= 0) {
-		err = gpio_request(gpio_wl_reg_on, "WL_REG_ON");
-		if (err < 0) {
-			printf("%s: gpio_request(%d) for WL_REG_ON failed %d\n",
-				__FUNCTION__, gpio_wl_reg_on, err);
-			gpio_wl_reg_on = -1;
-		}
-	}
+	/* WL_REG_ON is owned by the built-in sdhci module, don't request it here */
+
 	adapter->gpio_wl_reg_on = gpio_wl_reg_on;
 
 #ifdef CUSTOMER_OOB
@@ -330,8 +326,8 @@ dhd_wlan_deinit_gpio(wifi_adapter_info_t *adapter)
 #endif
 
 	if (gpio_wl_reg_on >= 0) {
-		printf("%s: gpio_free(WL_REG_ON %d)\n", __FUNCTION__, gpio_wl_reg_on);
-		gpio_free(gpio_wl_reg_on);
+		printf("%s: not freeing WL_REG_ON(%d) from bcmdhd\n", __FUNCTION__, gpio_wl_reg_on);
+		/* WL_REG_ON is owned by the built-in sdhci module */
 		adapter->gpio_wl_reg_on = -1;
 	}
 #ifdef CUSTOMER_OOB
