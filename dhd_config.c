@@ -160,8 +160,8 @@ const module_name_map_v2_t module_name_map_v2[] = {
 #ifdef BCMSDIO
 	{BCM4381_CHIP_ID,	0,	""},
 	{BCM4381_CHIP_ID,	1,	""},
-	{BCM43752_CHIP_ID,	4,	""},
-	{BCM43756_CHIP_ID,	4,	""},
+	{BCM43752_CHIP_ID,	4,	"syn43756b0"},
+	{BCM43756_CHIP_ID,	4,	"syn43756b0"},
 	{BCM43756_CHIP_ID,	6,	""},
 	{BCM43711_CHIP_ID,	0,	""},
 	{BCM4382_CHIP_ID,	3,	""},
