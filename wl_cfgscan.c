@@ -2460,6 +2460,8 @@ wl_do_escan(struct bcm_cfg80211 *cfg, struct wiphy *wiphy, struct net_device *nd
 	err = wl_run_escan(cfg, ndev, request, WL_SCAN_ACTION_START);
 	if (unlikely(err)) {
 		WL_ERR(("escan failed (%d)\n", err));
+		if(err == BCME_SCANREJECT)
+			net_os_send_hang_message(ndev);
 		goto exit;
 	}
 
@@ -3002,6 +3004,9 @@ wl_cfg80211_scan(struct wiphy *wiphy, struct net_device *ndev,
 
 	err = __wl_cfg80211_scan(wiphy, ndev, request, NULL);
 	if (unlikely(err)) {
+		WL_ERR(("scan error (%d)\n", err));
+		if(err == BCME_SCANREJECT)
+			net_os_send_hang_message(ndev);
 		if (err == -EBUSY) {
 			WL_DBG(("scan busy (%d)\n", err));
 #ifdef WL_CFGVENDOR_SEND_ALERT_EVENT
