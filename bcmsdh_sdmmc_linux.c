@@ -160,7 +160,8 @@ static void sdioh_remove(struct sdio_func *func)
 
 	osh = sdioh->osh;
 	bcmsdh_remove(sdioh->bcmsdh);
-	sdioh_detach(osh, sdioh);
+	/* during driver unbind this would crash
+	sdioh_detach(osh, sdioh); */
 	osl_detach(osh);
 }
 
