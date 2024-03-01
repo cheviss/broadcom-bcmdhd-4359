@@ -9163,6 +9163,9 @@ wl_cfg80211_set_power_mgmt(struct wiphy *wiphy, struct net_device *dev,
 	RETURN_EIO_IF_NOT_UP(cfg);
 
 	WL_DBG(("Enter\n"));
+
+	/* remember if the power management on/off value even when we are not connected */
+	dhd_conf_set_pm_on(dhd, enabled);
 	mode = wl_get_mode_by_netdev(cfg, dev);
 	if (cfg->p2p_net == dev || _net_info == NULL ||
 			!wl_get_drv_status(cfg, CONNECTED, dev) ||
@@ -9199,6 +9202,7 @@ wl_cfg80211_set_power_mgmt(struct wiphy *wiphy, struct net_device *dev,
 	rtt_status->pm = pm;
 	if (rtt_status->status != RTT_ENABLED) {
 #endif /* RTT_SUPPORT */
+		WL_DBG(("%s: setting WLC_SET_PM to %s\n", dev->name, (pm ? "enabled" : "disabled")));
 		err = wldev_ioctl_set(dev, WLC_SET_PM, &pm, sizeof(pm));
 		if (unlikely(err)) {
 			if (err == -ENODEV)

@@ -3366,7 +3366,7 @@ wl_cfg80211_set_ap_role(
 	}
 
 	if (bssidx == 0) {
-		pm = 0;
+		pm = PM_OFF;
 		if ((err = wldev_ioctl_set(dev, WLC_SET_PM, &pm, sizeof(pm))) != 0) {
 			WL_ERR(("wl PM 0 returned error:%d\n", err));
 			/* Ignore error, if any */

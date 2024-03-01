@@ -2765,11 +2765,21 @@ dhd_conf_discard_pkt_filter(dhd_pub_t *dhd)
 }
 #endif /* PKT_FILTER_SUPPORT */
 
+void
+dhd_conf_set_pm_on(dhd_pub_t *dhd, bool on)
+{
+	if (dhd && dhd->conf) {
+		dhd->conf->pm_on = on;
+	}
+}
+
 int
 dhd_conf_get_pm(dhd_pub_t *dhd)
 {
 	if (dhd && dhd->conf) {
-		return dhd->conf->pm;
+		/* return the current power management mode or PM_OFF if power management
+		 * is completely disabled */
+		return dhd->conf->pm_on ? dhd->conf->pm : PM_OFF;
 	}
 	return -1;
 }
@@ -5617,6 +5627,9 @@ dhd_conf_preinit(dhd_pub_t *dhd)
 	conf->dhd_dpc_prio = -1;
 	conf->frameburst = -1;
 	conf->deepsleep = FALSE;
+
+	/* power management enabled by default */
+	conf->pm_on = TRUE;
 	conf->pm = -1;
 	conf->pm_in_suspend = -1;
 	conf->insuspend = 0;

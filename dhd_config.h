@@ -314,6 +314,7 @@ typedef struct dhd_conf {
 	int dhd_dpc_prio;
 	int frameburst;
 	bool deepsleep;
+	bool pm_on;
 	int pm;
 	int pm_in_suspend;
 	int suspend_mode;
@@ -440,6 +441,7 @@ int dhd_conf_read_config(dhd_pub_t *dhd, char *conf_path);
 int dhd_conf_set_chiprev(dhd_pub_t *dhd, uint chip, uint chiprev);
 uint dhd_conf_get_chip(void *context);
 uint dhd_conf_get_chiprev(void *context);
+void dhd_conf_set_pm_on(dhd_pub_t *dhd, bool on);
 int dhd_conf_get_pm(dhd_pub_t *dhd);
 int dhd_conf_reg2args(dhd_pub_t *dhd, char *cmd, bool set, uint32 index, uint32 *val);
 int dhd_conf_check_hostsleep(dhd_pub_t *dhd, int cmd, void *buf, int len,
