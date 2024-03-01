@@ -7342,6 +7342,7 @@ dhd_pri_open(struct net_device *net)
 
 	DHD_MUTEX_IS_LOCK_RETURN();
 	DHD_MUTEX_LOCK();
+	netif_carrier_off(net);
 	BCM_REFERENCE(dhd);
 	ret = dhd_open(net);
 	if (unlikely(ret)) {
@@ -7400,6 +7401,7 @@ dhd_pri_stop(struct net_device *net)
 		return ret;
 	}
 
+	netif_carrier_off(net);
 	return ret;
 }
 
@@ -14181,6 +14183,9 @@ void dhd_detach(dhd_pub_t *dhdp)
 	}
 
 	if (dev) {
+#if defined(WL_CFG80211)
+		netif_carrier_off(dev);
+#endif
 		rtnl_lock();
 #if defined(WL_CFG80211) && defined(WL_STATIC_IF)
 		if (dhd->dhd_state & DHD_ATTACH_STATE_CFG80211) {
