@@ -55,7 +55,7 @@ DHDCFLAGS = -Wall -Wstrict-prototypes -Wno-date-time                      \
 	-Dlinux -DLINUX -DBCMDRIVER -DBCMUTILS_ERR_CODES                      \
 	-DBCMDONGLEHOST -DBCMDMA32 -DBCMFILEIMAGE                             \
 	-DDHDTHREAD -DDHD_DEBUG -DSHOW_EVENTS -DGET_OTP_MAC_ENABLE            \
-	-DWIFI_ACT_FRAME -DARP_OFFLOAD_SUPPORT -DSUPPORT_PM2_ONLY             \
+	-DWIFI_ACT_FRAME -DSUPPORT_PM2_ONLY                                   \
 	-DPKTPRIO_OVERRIDE                                                    \
 	-DKEEP_ALIVE -DPKT_FILTER_SUPPORT -DDHDTCPACK_SUPPRESS                \
 	-DDHD_DONOT_FORWARD_BCMEVENT_AS_NETWORK_PKT -DOEM_ANDROID             \
