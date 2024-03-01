@@ -1882,12 +1882,14 @@ dhd_conf_fix_country(dhd_pub_t *dhd)
 			dtoh32(list->count)<11)) {
 		CONFIG_ERROR("bcmerror=%d, # of channels %d\n",
 			bcmerror, dtoh32(list->count));
-		dhd_conf_map_country_list(dhd, &dhd->conf->cspec);
+		if (dhd_conf_map_country_list(dhd, &dhd->conf->cspec))
+			dhd_get_customized_country_code(dhd_idx2net(dhd, 0), dhd->conf->cspec.ccode, &dhd->conf->cspec);
 		if ((bcmerror = dhd_conf_set_country(dhd, &dhd->conf->cspec)) < 0) {
 			strcpy(cspec.country_abbrev, "US");
 			cspec.rev = 0;
 			strcpy(cspec.ccode, "US");
-			dhd_conf_map_country_list(dhd, &cspec);
+			if (dhd_conf_map_country_list(dhd, &cspec))
+				dhd_get_customized_country_code(dhd_idx2net(dhd, 0), cspec.ccode, &cspec);
 			dhd_conf_set_country(dhd, &cspec);
 		}
 	}
