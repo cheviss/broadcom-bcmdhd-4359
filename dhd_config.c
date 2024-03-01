@@ -993,8 +993,8 @@ dhd_conf_get_module_name(dhd_pub_t *dhd, int ag_type)
 #endif
 	{
 		row_chip = dhd_conf_match_chip(dhd, ag_type);
-		if (row_chip && strlen(row_chip->module_name)) {
-			name = row_chip->module_name;
+		if (row_chip && strlen(row_chip->chip_name)) {
+			name = row_chip->chip_name;
 		}
 		else {
 			row_module_v2 = dhd_conf_match_module_v2(dhd);
