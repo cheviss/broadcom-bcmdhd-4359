@@ -20403,10 +20403,11 @@ static s32 __wl_update_wiphybands(struct bcm_cfg80211 *cfg, bool notify)
 #else
 			wiphy_apply_custom_regulatory(wiphy, global_regd_self);
 #endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(4, 0, 0) */
-#else
-			wl_notify_regd(wiphy, NULL);
+
 #endif /* EXT_REGD_INFO */
 		}
+
+		wl_notify_regd(wiphy, curr_alpha2);
 #endif /* WL_SELF_MANAGED_REGDOM */
 	}
 
