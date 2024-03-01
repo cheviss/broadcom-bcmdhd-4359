@@ -21369,6 +21369,7 @@ s32 wl_cfg80211_up(struct net_device *net)
 	return err;
 }
 
+extern void sdhci_reset(void);
 /* Private Event to Supplicant with indication that chip hangs */
 int wl_cfg80211_hang(struct net_device *dev, u16 reason)
 {
@@ -21449,6 +21450,8 @@ int wl_cfg80211_hang(struct net_device *dev, u16 reason)
 		/* Do we need to call wl_cfg80211_down here ? */
 		wl_link_down(cfg);
 	}
+
+	sdhci_reset();
 	return 0;
 }
 

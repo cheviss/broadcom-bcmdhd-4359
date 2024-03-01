@@ -31,6 +31,7 @@
 
 #include <linux/sched.h>	/* request_irq() */
 
+#include <linux/device.h>
 #include <linux/mmc/core.h>
 #include <linux/mmc/card.h>
 #include <linux/mmc/host.h>
@@ -79,6 +80,16 @@ PBCMSDH_SDMMC_INSTANCE gInstance;
 
 #if (LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 39)) && defined(CONFIG_PM_SLEEP)
 extern volatile bool dhd_mmc_suspend;
+
+extern void sdhci_esdhc_rebind_driver(struct device *dev);
+static struct sdio_func *thefunc = NULL;
+
+void sdhci_reset(void)
+{
+	if (thefunc && thefunc->card && thefunc->card->host) {
+		sdhci_esdhc_rebind_driver(thefunc->card->host->parent);
+	}
+}
 #endif /* (LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 39)) && defined(CONFIG_PM_SLEEP) */
 
 static int sdioh_probe(struct sdio_func *func)
@@ -136,6 +147,7 @@ static int sdioh_probe(struct sdio_func *func)
 	}
 
 	sdio_set_drvdata(func, sdioh);
+	thefunc = func;
 	return 0;
 
 fail:
